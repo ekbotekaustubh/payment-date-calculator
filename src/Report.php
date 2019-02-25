@@ -1,4 +1,5 @@
 <?php
+error_reporting(E_ALL);
 /**
  * Created by PhpStorm.
  * User: tonystark
@@ -12,7 +13,7 @@ class Report
      *
      * @return array
      */
-    public function getPaymentDates(): array
+    public function getSalaryDates(): array
     {
         $year = date('Y');
         $weekEnds = $this->getWeekEnds();
@@ -21,14 +22,26 @@ class Report
             $monthEnd = date('Y-m-t', strtotime($year . '-' . $month . '-1'));
             $monthEndDay = date('l', strtotime($monthEnd));
 
-            if ($position = array_search($monthEndDay, $weekEnds)) {
-                $position;
+            if (false !== ($position = array_search($monthEndDay, $weekEnds))) {
+                $monthEnd = date('Y-m-d', strtotime($monthEnd . ' - ' . ($position + 1) . ' day'));
             }
 
-            $salaryDates[] = $monthEnd;
+            $bonusDate = $year . '-' . $month . '-15';
+            $bonusDay = date('l', strtotime($bonusDate));
+
+            if (false !== ($position = array_search($bonusDay, $weekEnds))) {
+                $bonusDate = date('Y-m-d', strtotime($bonusDate . ' + ' . (4 - $position) . ' day'));
+            }
+
+            $salaryDates[] = [
+                'salaryDate' => $monthEnd,
+                'salaryDay' => date('l', strtotime($monthEnd)),
+                'bonusDate' => $bonusDate,
+                'bonusDay' => date('l', strtotime($bonusDate))
+            ];
         }
-        $dates = [];
-        return $dates;
+
+        return $salaryDates;
     }
 
     /**
@@ -44,3 +57,7 @@ class Report
         ];
     }
 }
+
+$report = new Report();
+$salaryDates = $report->getSalaryDates();
+print_r($salaryDates);
