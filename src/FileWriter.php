@@ -1,11 +1,13 @@
 <?php
+namespace MiccoTest;
+
 /**
  * Created by PhpStorm.
  * User: tonystark
  * Date: 1/3/19
  * Time: 10:57 PM
  */
-interface FileWritter
+interface FileWriter
 {
     /**
      * File write operation.

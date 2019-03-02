@@ -1,5 +1,7 @@
 <?php
+ini_set('display_errors', 'on');
 error_reporting(E_ALL);
+
 /**
  * Created by PhpStorm.
  * User: tonystark
@@ -9,6 +11,7 @@ error_reporting(E_ALL);
 class Report
 {
     /**
+use MiccoTest;
      * Get payment days.
      *
      * @return array
@@ -60,4 +63,5 @@ class Report
 
 $report = new Report();
 $salaryDates = $report->getSalaryDates();
-print_r($salaryDates);
+$csv = new MiccoTest\csv();
+$csv->write('report.csv', $salaryDates, '+w');
