@@ -1,6 +1,5 @@
 <?php
-ini_set('display_errors', 'on');
-error_reporting(E_ALL);
+namespace MiccoTest;
 
 /**
  * Created by PhpStorm.
@@ -11,7 +10,6 @@ error_reporting(E_ALL);
 class Report
 {
     /**
-use MiccoTest;
      * Get payment days.
      *
      * @return array
@@ -20,27 +18,28 @@ use MiccoTest;
     {
         $year = date('Y');
         $weekEnds = $this->getWeekEnds();
-        $salaryDates = [];
+        $salaryDates[] = ['salaryDate', 'salaryDay', 'bonusDate', 'bonusDay'];
+
         for ($month = date('m'); $month <= 12; $month++) {
-            $monthEnd = date('Y-m-t', strtotime($year . '-' . $month . '-1'));
+            $monthEnd = date('t-m-Y', strtotime($year . '-' . $month . '-1'));
             $monthEndDay = date('l', strtotime($monthEnd));
 
             if (false !== ($position = array_search($monthEndDay, $weekEnds))) {
-                $monthEnd = date('Y-m-d', strtotime($monthEnd . ' - ' . ($position + 1) . ' day'));
+                $monthEnd = date('d-m-Y', strtotime($monthEnd . ' - ' . ($position + 1) . ' day'));
             }
 
-            $bonusDate = $year . '-' . $month . '-15';
+            $bonusDate = '15-'. $month . '-' . $year;
             $bonusDay = date('l', strtotime($bonusDate));
 
             if (false !== ($position = array_search($bonusDay, $weekEnds))) {
-                $bonusDate = date('Y-m-d', strtotime($bonusDate . ' + ' . (4 - $position) . ' day'));
+                $bonusDate = date('d-m-Y', strtotime($bonusDate . ' + ' . (4 - $position) . ' day'));
             }
 
             $salaryDates[] = [
-                'salaryDate' => $monthEnd,
-                'salaryDay' => date('l', strtotime($monthEnd)),
-                'bonusDate' => $bonusDate,
-                'bonusDay' => date('l', strtotime($bonusDate))
+                $monthEnd,
+                date('l', strtotime($monthEnd)),
+                $bonusDate,
+                date('l', strtotime($bonusDate))
             ];
         }
 
@@ -59,9 +58,19 @@ use MiccoTest;
             'Sunday'
         ];
     }
-}
 
-$report = new Report();
-$salaryDates = $report->getSalaryDates();
-$csv = new MiccoTest\csv();
-$csv->write('report.csv', $salaryDates, '+w');
+    /**
+     * Generate report.
+     */
+    public function generateReport()
+    {
+        $salaryDates = $this->getSalaryDates();
+        $csv = new \MiccoTest\CsvFileWriter();
+        $filePath = $_SERVER['DOCUMENT_ROOT'] . '/report.csv';
+        if ($csv->write($filePath, $salaryDates, 'w')) {
+            echo 'Report generated successfully. You can download it <a href="/report.csv">Here</a>';
+        } else {
+            echo 'Error in writing file.';
+        }
+    }
+}
