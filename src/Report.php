@@ -12,9 +12,27 @@ class Report
      */
     protected $fileName;
 
-    public function __construct(string $fileName)
+    /**
+     * @return string
+     */
+    public function getFileName(): string
+    {
+        if (null == $this->fileName) {
+            $this->fileName = 'report.csv';
+        }
+
+        return $this->fileName;
+    }
+
+    /**
+     * @param string $fileName
+     * @return Report
+     */
+    public function setFileName(string $fileName): Report
     {
         $this->fileName = $fileName;
+
+        return $this;
     }
 
     /**
@@ -106,7 +124,7 @@ class Report
     {
         $salaryDates = $this->getSalaryDates();
         $csv = new \MiccoTest\CsvFileWriter();
-        $filePath = $_SERVER['DOCUMENT_ROOT'] . '/' . $this->fileName;
+        $filePath = $this->getFileName();
 
         if ($csv->write($filePath, $salaryDates, 'w')) {
             echo 'Report generated successfully. You can download it <a href="' . $filePath . '">Here</a>';

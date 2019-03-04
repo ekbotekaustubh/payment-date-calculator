@@ -6,5 +6,6 @@ $loader = require __DIR__ . '/vendor/autoload.php';
 $loader->addPsr4('MiccoTest\\', __DIR__.'/src');
 $loader->addPsr4('MiccoTest\\Tests\\', __DIR__);
 
-$report = new MiccoTest\Report($argv[1] ?? 'report.csv');
+$report = new MiccoTest\Report();
+$report->setFileName($argv[1] ?? 'report.csv');
 $report->generateReport();

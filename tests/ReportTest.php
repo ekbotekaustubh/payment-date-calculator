@@ -1,7 +1,9 @@
 <?php
 use PHPUnit\Framework\TestCase;
-include 'src/Report.php';
 
+/**
+ * Class ReportTest
+ */
 class ReportTest extends TestCase
 {
     /**
@@ -9,31 +11,93 @@ class ReportTest extends TestCase
      */
     public function testSalaryDates()
     {
-        $reportClass = new Report();
+        $reportClass = new MiccoTest\Report();
+        $reportClass->setFileName('report.csv');
         $dates = $reportClass->getSalaryDates();
         $expected = [
-            ['date' => '2019-02-28', 'day' => 'Thursday',],
-            ['date' => '2019-03-29', 'day' => 'Friday',],
-            ['date' => '2019-04-30', 'day' => 'Tuesday',],
-            ['date' => '2019-05-31', 'day' => 'Friday',],
-            ['date' => '2019-06-28', 'day' => 'Friday',],
-            ['date' => '2019-07-31', 'day' => 'Wednesday',],
-            ['date' => '2019-08-30', 'day' => 'Friday',],
-            ['date' => '2019-09-30', 'day' => 'Monday',],
-            ['date' => '2019-10-31', 'day' => 'Thursday',],
-            ['date' => '2019-11-29', 'day' => 'Friday',],
-            ['date' => '2019-12-31', 'day' => 'Tuesday',]
+            ['salaryDate', 'salaryDay', 'bonusDate', 'bonusDay'],
+            ['29-03-2019', 'Friday', '15-3-2019', 'Friday'],
+            ['30-04-2019', 'Tuesday', '15-4-2019','Monday',],
+            ['31-05-2019', 'Friday','15-5-2019','Wednesday',],
+            ['28-06-2019', 'Friday','19-06-2019','Wednesday',],
+            ['31-07-2019', 'Wednesday','15-7-2019','Monday',],
+            ['30-08-2019', 'Friday','15-8-2019','Thursday',],
+            ['30-09-2019', 'Monday', '18-09-2019','Wednesday',],
+            ['31-10-2019', 'Thursday', '15-10-2019', 'Tuesday', ],
+            ['29-11-2019', 'Friday', '15-11-2019', 'Friday',],
+            ['31-12-2019', 'Tuesday', '18-12-2019', 'Wednesday',]
         ];
 
         $this->assertEquals($expected, $dates);
     }
 
-    public function testBonusDates()
+    /**
+     * @param int $year
+     * @param int $month
+     * @param array $weekEnds
+     * @param string $expected
+     * @dataProvider monthEndDateDataProvider
+     */
+    public function testGetMonthEndDate(int $year, int $month, array $weekEnds, string $expected)
     {
-        $reportClass = new Report();
-        $dates = $reportClass->getBonusDates();
-        $expected = [];
+        $reportClass = new MiccoTest\Report();
+        $monthEnd = $reportClass->getMonthEndDate($year, $month, $weekEnds);
 
-        $this->assertEquals($expected, $dates);
+        $this->assertEquals($expected, $monthEnd);
+    }
+
+    /**
+     * @param int $year
+     * @param int $month
+     * @param array $weekEnds
+     * @param string $expected
+     * @dataProvider bonusDateDataProvider
+     */
+    public function testGetBonusDate(int $year, int $month, array $weekEnds, string $expected)
+    {
+        $reportClass = new MiccoTest\Report();
+        $bonusEnd = $reportClass->getBonusDate($year, $month, $weekEnds);
+
+        $this->assertEquals($expected, $bonusEnd);
+    }
+
+    /**
+     * @return array
+     */
+    public function monthEndDateDataProvider()
+    {
+        $weekends = ['Saturday', 'Sunday'];
+        return [
+            [2019, 3, $weekends, '29-03-2019'],
+            [2019, 4, $weekends, '30-04-2019'],
+            [2019, 5, $weekends, '31-05-2019'],
+            [2019, 6, $weekends, '28-06-2019'],
+            [2019, 7, $weekends, '31-07-2019'],
+            [2019, 8, $weekends, '30-08-2019'],
+            [2019, 9, $weekends, '30-09-2019'],
+            [2019, 10, $weekends, '31-10-2019'],
+            [2019, 11, $weekends, '29-11-2019'],
+            [2019, 12, $weekends, '31-12-2019'],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function bonusDateDataProvider()
+    {
+        $weekends = ['Saturday', 'Sunday'];
+        return [
+            [2019, 3, $weekends, '15-3-2019'],
+            [2019, 4, $weekends, '15-4-2019'],
+            [2019, 5, $weekends, '15-5-2019'],
+            [2019, 6, $weekends, '19-06-2019'],
+            [2019, 7, $weekends, '15-7-2019'],
+            [2019, 8, $weekends, '15-8-2019'],
+            [2019, 9, $weekends, '18-09-2019'],
+            [2019, 10, $weekends, '15-10-2019'],
+            [2019, 11, $weekends, '15-11-2019'],
+            [2019, 12, $weekends, '18-12-2019'],
+        ];
     }
 }
