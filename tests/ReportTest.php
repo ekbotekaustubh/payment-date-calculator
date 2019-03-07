@@ -1,19 +1,28 @@
 <?php
 use PHPUnit\Framework\TestCase;
-
+use PaymentDateCalculator\Report;
 /**
  * Class ReportTest
  */
 class ReportTest extends TestCase
 {
+    protected $reportClass;
+
+    /**
+     * Basic set up.
+     */
+    public function setUp()
+    {
+        $this->reportClass = new Report();
+    }
     /**
      * Test salary dates.
      */
     public function testSalaryDates()
     {
-        $reportClass = new MiccoTest\Report();
-        $reportClass->setFileName('report.csv');
-        $dates = $reportClass->getSalaryDates();
+
+        $this->reportClass->setFileName('report.csv');
+        $dates = $this->reportClass->getPaymentDates(3, 2019);
         $expected = [
             ['salaryDate', 'salaryDay', 'bonusDate', 'bonusDay'],
             ['29-03-2019', 'Friday', '15-3-2019', 'Friday'],
@@ -40,8 +49,7 @@ class ReportTest extends TestCase
      */
     public function testGetMonthEndDate(int $year, int $month, array $weekEnds, string $expected)
     {
-        $reportClass = new MiccoTest\Report();
-        $monthEnd = $reportClass->getMonthEndDate($year, $month, $weekEnds);
+        $monthEnd = $this->reportClass->getSalaryDate($year, $month, $weekEnds);
 
         $this->assertEquals($expected, $monthEnd);
     }
@@ -55,8 +63,7 @@ class ReportTest extends TestCase
      */
     public function testGetBonusDate(int $year, int $month, array $weekEnds, string $expected)
     {
-        $reportClass = new MiccoTest\Report();
-        $bonusEnd = $reportClass->getBonusDate($year, $month, $weekEnds);
+        $bonusEnd = $this->reportClass->getBonusDate($year, $month, $weekEnds);
 
         $this->assertEquals($expected, $bonusEnd);
     }

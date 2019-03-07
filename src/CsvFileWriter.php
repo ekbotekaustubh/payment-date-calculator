@@ -1,6 +1,6 @@
 <?php
-namespace MiccoTest;
-//include 'FileWriter.php';
+namespace PaymentDateCalculator;
+
 /**
  * Created by PhpStorm.
  * User: tonystark

@@ -1,5 +1,5 @@
 <?php
-namespace MiccoTest;
+namespace PaymentDateCalculator;
 
 /**
  * Created by PhpStorm.

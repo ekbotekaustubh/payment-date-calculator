@@ -1,5 +1,6 @@
 <?php
-namespace MiccoTest;
+namespace PaymentDateCalculator;
+use PaymentDateCalculator\CsvFileWriter;
 
 /**
  * Class Report
@@ -10,14 +11,16 @@ class Report
     /**
      * @var string
      */
-    protected $fileName;
+    protected $fileName = '';
 
     /**
+     * Get file name.
+     *
      * @return string
      */
     public function getFileName(): string
     {
-        if (null == $this->fileName) {
+        if ('' === $this->fileName) {
             $this->fileName = 'report.csv';
         }
 
@@ -38,24 +41,24 @@ class Report
     /**
      * Get payment days.
      *
+     * @param int $month
+     * @param int $year
      * @return array
      */
-    public function getSalaryDates(): array
+    public function getPaymentDates(int $month, int $year): array
     {
-        $year = date('Y');
         $weekEnds = $this->getWeekEnds();
-        $salaryDates[] = ['salaryDate', 'salaryDay', 'bonusDate', 'bonusDay'];
+        $salaryDates[] = ['Month', 'Salary Date', 'Bonus Date'];
 
-        for ($month = date('m'); $month <= 12; $month++) {
+        for ($monthNumber = $month; $monthNumber <= 12; $monthNumber++) {
 
-            $monthEnd = $this->getMonthEndDate($year, $month, $weekEnds);
-            $bonusDate = $this->getBonusDate($year, $month, $weekEnds);
+            $monthEnd = $this->getSalaryDate($year, $monthNumber, $weekEnds);
+            $bonusDate = $this->getBonusDate($year, $monthNumber, $weekEnds);
 
             $salaryDates[] = [
+                date('F', strtotime($monthEnd)),
                 $monthEnd,
-                date('l', strtotime($monthEnd)),
-                $bonusDate,
-                date('l', strtotime($bonusDate))
+                $bonusDate
             ];
         }
 
@@ -84,7 +87,7 @@ class Report
      * @param array $weekEnds
      * @return string
      */
-    public function getMonthEndDate(int $year, int $month, array $weekEnds): string
+    public function getSalaryDate(int $year, int $month, array $weekEnds): string
     {
         $monthEnd = date('t-m-Y', strtotime($year . '-' . $month . '-1'));
         $monthEndDay = date('l', strtotime($monthEnd));
@@ -120,10 +123,10 @@ class Report
     /**
      * Generate report.
      */
-    public function generateReport()
+    public function generateReport($month, $year)
     {
-        $salaryDates = $this->getSalaryDates();
-        $csv = new \MiccoTest\CsvFileWriter();
+        $salaryDates = $this->getPaymentDates($month, $year);
+        $csv = new CsvFileWriter();
         $filePath = $this->getFileName();
 
         if ($csv->write($filePath, $salaryDates, 'w')) {
