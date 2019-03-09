@@ -1,4 +1,4 @@
-#Payment date calculator
+# Payment date calculator
 
 A command line utility which generates csv file containing salary and bonus date from given month and year. 
 
