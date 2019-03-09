@@ -1,5 +1,5 @@
 <?php
-namespace PaymentDateCalculator;
+namespace PaymentDateCalculator\Services;
 
 /**
  * Created by PhpStorm.

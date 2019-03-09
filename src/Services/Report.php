@@ -1,6 +1,6 @@
 <?php
-namespace PaymentDateCalculator;
-use PaymentDateCalculator\CsvFileWriter;
+namespace PaymentDateCalculator\Services;
+use PaymentDateCalculator\Services\CsvFileWriter;
 
 /**
  * Class Report

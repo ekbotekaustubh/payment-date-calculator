@@ -1,6 +1,6 @@
 <?php
 use PHPUnit\Framework\TestCase;
-use PaymentDateCalculator\Report;
+use PaymentDateCalculator\Services\Report;
 /**
  * Class ReportTest
  */
