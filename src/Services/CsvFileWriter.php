@@ -2,10 +2,8 @@
 namespace PaymentDateCalculator\Services;
 
 /**
- * Created by PhpStorm.
- * User: tonystark
- * Date: 1/3/19
- * Time: 11:03 PM
+ * Class CsvFileWriter
+ * @package PaymentDateCalculator\Services
  */
 class CsvFileWriter implements FileWriter
 {

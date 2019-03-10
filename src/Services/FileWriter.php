@@ -2,10 +2,8 @@
 namespace PaymentDateCalculator\Services;
 
 /**
- * Created by PhpStorm.
- * User: tonystark
- * Date: 1/3/19
- * Time: 10:57 PM
+ * Interface FileWriter
+ * @package PaymentDateCalculator\Services
  */
 interface FileWriter
 {
