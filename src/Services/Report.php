@@ -1,7 +1,9 @@
 <?php
 namespace PaymentDateCalculator\Services;
-use PaymentDateCalculator\Services\CsvFileWriter;
-use PaymentDateCalculator\Services\Calculator;
+use PaymentDateCalculator\Services\{
+    CsvFileWriter,
+    Calculator
+};
 
 /**
  * Class Report
@@ -50,7 +52,7 @@ class Report
         $csv = new CsvFileWriter();
 
         if ($csv->write($fileName, $salaryDates, 'w')) {
-            echo 'Report generated successfully. You can download it <a href="' . $fileName . '">Here</a>';
+            echo 'Report generated successfully.';
         } else {
             echo 'Error in writing file.';
         }

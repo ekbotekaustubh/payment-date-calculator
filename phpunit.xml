@@ -3,8 +3,13 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/|version|/phpunit.xsd"
         colors="true"
-        bootstrap="./vendor/autoload.php"
+        bootstrap="tests/Bootstrap.php"
 >
+    <testsuites>
+        <testsuite name="SalaryPayment">
+            <directory>tests/</directory>
+        </testsuite>
+    </testsuites>
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">./src/</directory>
