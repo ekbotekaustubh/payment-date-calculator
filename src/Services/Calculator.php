@@ -52,7 +52,7 @@ class Calculator
      */
     public function getBonusDate(int $year, int $month, array $weekEnds): string
     {
-        $bonusDate = sprintf('15-%d-%d', $month, $year);
+        $bonusDate = date('15-m-Y', strtotime(sprintf('15-%s-%d', $month, $year)));
         $bonusDay = date('l', strtotime($bonusDate));
 
         if (false !== ($position = array_search($bonusDay, $weekEnds))) {
